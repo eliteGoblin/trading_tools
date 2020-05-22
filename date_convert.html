@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.11/moment-timezone-with-data-2010-2020.min.js"></script>
+<script>
+function getDate() {
+    inputTZ = document.getElementById('inputTZ').value;
+    outputTZ = document.getElementById('outputTZ').value;
+    inputDateTimeStr = document.getElementById('inputDateTime').value;
+    if (inputDateTimeStr === "") {
+        alert('输入时间不能为空, 必须为MM-DD HH:mm格式')
+        return false
+    }
+    var d = new Date();
+    var year = d.getFullYear();
+
+    dtFormat = 'YYYYMMDD HH:mm'
+    inputDateTimeStr = String(year)+"-"+inputDateTimeStr
+    inputDT = moment.tz(inputDateTimeStr, dtFormat, inputTZ);
+    outputDT = inputDT.tz(outputTZ).format('MM-DD HH:mm')
+    document.getElementById("outputDateTime").value = outputDT;
+    return false;
+}
+</script>
+<script>
+function addCell(tr, val) {
+    var td = document.createElement('td');
+    td.innerHTML = val;
+    tr.appendChild(td)
+}
+
+function addRow(tbl, val_1, val_2, val_3, val_4) {
+    var tr = document.createElement('tr');
+    addCell(tr, val_1);
+    addCell(tr, val_2);
+    addCell(tr, val_3);
+    addCell(tr, val_4);
+    tbl.appendChild(tr)
+}
+function addTable() {
+    tbl = document.getElementById('zoneTable');
+    addRow(tbl, 'Market', 'Trade Hour(Syd time)', 'Local Time', 'Trade Hour(Local Time)');
+}
+</script>
+</head>
+<body>
+
+<label for="时区选择">Input date's timezone:</label>
+<select name="inputTZ" id="inputTZ">
+    <option value="Africa/Addis_Ababa">Africa/Addis_Ababa</option>
+    <option value="Australia/Sydney">Australia/Sydney</option>
+    <option value="America/New_York">America/New_York</option>
+    <option value="Europe/London">Europe/London</option>
+</select>
+<p>
+    待转换时间(2018.08.23 ): <input type="text" id="inputDateTime" name="inputDateTime">
+</p>
+
+<label for="时区选择">Output date's timezone:</label>
+<select name="outputTZ" id="outputTZ">
+    <option value="Africa/Addis_Ababa">Africa/Addis_Ababa</option>
+    <option value="Australia/Sydney">Australia/Sydney</option>
+    <option value="America/New_York">America/New_York</option>
+    <option value="Europe/London">Europe/London</option>
+</select>
+<p>
+    转换后时间: <input type="text" id="outputDateTime" name="outputDateTime" readonly>
+</p>
+<!-- <p>
+    <button onclick="getDate()">转换</button>
+</p>
+<table id='zoneTable' border=0.1></table>
+<p>
+    <button onclick="addTable()">显示全部时区</button>
+</p> -->
